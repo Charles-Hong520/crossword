@@ -1,7 +1,8 @@
 .grid-container {
     display: grid;
-    border: 2.5px solid black;
+    --border-width: 3px;
+    border: var(--border-width) solid black;
     background-color: black;
-    gap: 2.5px;
+    gap: var(--border-width);
 }
 

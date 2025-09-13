@@ -6,29 +6,22 @@ function Grid({ row, col }) {
   const [posCol, setPosCol] = useState(0);
   const [letters, setLetters] = useState(' '.repeat(row * col));
   const [highlightDir, setHighlightDir] = useState('row'); // 'row' or 'col'
-
+  console.log(posRow, posCol)
 
   function getHighlightColor(i) {
     if (i === posRow * col + posCol) {
       return "yellow";
     } else if (highlightDir == 'row' && posRow === Math.floor(i / col)) {
-      return "cyan";
+      return "#99ff00";
     } else if (highlightDir == 'col' && posCol == i % col) {
-      return "cyan";
+      return "#99ff00";
     }
     return "white";
   }
 
-  function getCells() {
-    console.log("bruh", posRow, posCol);
-
-    let gridCells = Array.from({ length: row * col }).map((_, i) => {
-
-      return <Cell key={i} letter={letters[i]} color={getHighlightColor(i)}></Cell>
-    });
-
-    return gridCells;
-  }
+  let gridCells = Array.from({ length: row * col }).map((_, i) => {
+    return <Cell key={i} pos={[Math.floor(i/col),i%col]}letter={letters[i]} color={getHighlightColor(i)} setPosCol={setPosCol} setPosRow={setPosRow}></Cell>
+  });
 
   function handleLetterInput(key) {
     // change highlighted box to next one
@@ -128,7 +121,7 @@ function Grid({ row, col }) {
           height: `${row * 125}px`
         }
       }>
-        {getCells()}
+        {gridCells}
       </div>
     </>
   )

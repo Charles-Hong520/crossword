@@ -1,5 +1,4 @@
-import { useEffect, useState } from 'react'
-function Cell({ id, letter, color = "#f0f0f0"}) {
+function Cell({ key,pos, letter, color = "#f0f0f0", setPosRow, setPosCol }) {
 
     const style = {
         display: "flex",
@@ -12,10 +11,14 @@ function Cell({ id, letter, color = "#f0f0f0"}) {
         color: "black",
         backgroundColor: color
     };
-
+    function handleClick(e) {
+        console.log(pos);
+        setPosRow(pos[0]);
+        setPosCol(pos[1]);
+    }
     return (
         <>
-            <p key={id} style={style}> {letter} </p>
+            <p key={key} style={style} onClick={handleClick}> {letter} </p>
         </>
     )
 }

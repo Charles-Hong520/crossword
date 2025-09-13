@@ -9,7 +9,7 @@ function App() {
 
   return (
     <>
-    <Grid row={5} col={7}></Grid>
+    <Grid row={2} col={7}></Grid>
     </>
   )
 }
