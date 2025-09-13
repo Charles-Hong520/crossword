@@ -1,6 +1,7 @@
 import { useState } from 'react'
-import './styles/App.css'
-import Grid from './components/Grid.jsx';
+import '@/styles/App.css'
+import Grid from '@/components/Grid.jsx';
+import Cell from '@/components/Cell';
 
 
 function App() {
@@ -8,7 +9,7 @@ function App() {
 
   return (
     <>
-    <Grid row={5} col={5}></Grid>
+    <Grid row={5} col={7}></Grid>
     </>
   )
 }
