@@ -1,15 +1,16 @@
 import { useState } from 'react'
 import '@/styles/App.css'
-import Grid from '@/components/Grid.jsx';
-import Cell from '@/components/Cell';
-
+import Puzzle from '@/components/Puzzle'
 
 function App() {
   const [count, setCount] = useState(0)
 
   return (
     <>
-    <Grid row={2} col={7}></Grid>
+    <div>
+      
+    <Puzzle></Puzzle>
+    </div>
     </>
   )
 }

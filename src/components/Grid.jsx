@@ -1,12 +1,50 @@
 import { useEffect, useState } from 'react'
 import '@/styles/Grid.css';
-import Cell from '@/components/Cell';
-function Grid({ row, col }) {
+
+let Cell = ({letter, color = "#f0f0f0", pos, setPos }) => {
+    const style = {
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        width: "100%",
+        height: "100%",
+        fontFamily: "sans-serif",
+        fontSize: "300%",
+        color: "black",
+        backgroundColor: color
+    };
+
+    function handleCellClick(e) {setPos(pos);}
+    return (
+        <>
+            <p key={pos} style={style} onClick={handleCellClick}> {letter} </p>
+        </>
+    )
+};
+
+function Grid({ puzzle }) {
+  const row = puzzle.rows;
+  const col = puzzle.cols;
   const [posRow, setPosRow] = useState(0);
   const [posCol, setPosCol] = useState(0);
   const [letters, setLetters] = useState(' '.repeat(row * col));
   const [highlightDir, setHighlightDir] = useState('row'); // 'row' or 'col'
-  console.log(posRow, posCol)
+
+  function setCurrLetter(i) {
+    setLetters(letters => {
+      return letters.slice(0, posRow * col + posCol) + i + letters.slice(posRow * col + posCol + 1);
+    });
+  }
+
+  function setPos(pos) {
+    if(posRow==pos[0] && posCol==pos[1]) {
+      console.log("same", pos);
+      setHighlightDir(highlightDir==='row' ? 'col' : 'row');
+    } else {
+      setPosRow(pos[0]);
+      setPosCol(pos[1]);
+    }
+  }
 
   function getHighlightColor(i) {
     if (i === posRow * col + posCol) {
@@ -16,21 +54,20 @@ function Grid({ row, col }) {
     } else if (highlightDir == 'col' && posCol == i % col) {
       return "#99ff00";
     }
-    return "white";
   }
 
   let gridCells = Array.from({ length: row * col }).map((_, i) => {
-    return <Cell key={i} pos={[Math.floor(i/col),i%col]}letter={letters[i]} color={getHighlightColor(i)} setPosCol={setPosCol} setPosRow={setPosRow}></Cell>
+    return <Cell key={i}
+      pos={[Math.floor(i / col), i % col]}
+      letter={letters[i]}
+      color={getHighlightColor(i)}
+      setPos={setPos}
+    />
   });
 
   function handleLetterInput(key) {
     // change highlighted box to next one
-
-    setLetters(letters => {
-      return letters.slice(0, posRow * col + posCol) + key + letters.slice(posRow * col + posCol + 1);
-    });
-
-
+    setCurrLetter(key);
     if (highlightDir === 'row') {
       //find to the right, if not, go down 1 col, if not, go to 0,0
       if (posCol === col - 1 && posRow === row - 1) {
@@ -58,7 +95,10 @@ function Grid({ row, col }) {
   useEffect(() => {
     function handleKeyDown(event) {
       const { key } = event;
-      if (key.length === 1) {
+      if(event.ctrlKey) {
+        return;
+      }
+      else if (key.length === 1) {
         handleLetterInput(key.toUpperCase());
       } else {
         switch (key) {
@@ -96,9 +136,7 @@ function Grid({ row, col }) {
             } else {
               setPosRow(Math.max(0, posRow - 1));
             }
-            setLetters(letters => {
-              return letters.slice(0, posRow * col + posCol) + ' ' + letters.slice(posRow * col + posCol + 1);
-            });
+            setCurrLetter(' ');
         }
       }
     }
