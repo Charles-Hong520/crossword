@@ -10,18 +10,18 @@ function Puzzle() {
     rows: 5,
     cols: 5,
     across: {
-      1: { clue: "Resurfaces a driveway, say", start: [0, 0] },
-      6: { clue: "Still in it", start: [1, 0] },
-      7: { clue: "Zero-shaped food that's a slang for zero, in tennis", start: [2, 0] },
-      8: { clue: "Gooey fireside treat", start: [3, 0] },
-      9: { clue: "Civil wrongs, in law", start: [4, 0] }
+      1: { clue: "Video ___", start: [0, 0] },
+      6: { clue: "Before (Fr)", start: [1, 0] },
+      7: { clue: "Arabic name meaning kind", start: [2, 0] },
+      8: { clue: "Right (Fr)", start: [3, 0] },
+      9: { clue: "Eagle (archaic)", start: [4, 0] }
     },
     down: {
-      1: { clue: "___ Blue Ribbon", start: [0, 0] },
-      2: { clue: "San Antonio historical attraction", start: [0, 1] },
-      3: { clue: "Vitality", start: [0, 2] },
-      4: { clue: "Tennis legend Chris", start: [0, 3] },
-      5: { clue: "Tennis legend Monica", start: [0, 4] },
+      1: { clue: "Fencers say, “En ___” (Fr)", start: [0, 0] },
+      2: { clue: "Stingy (Fr)", start: [0, 1] },
+      3: { clue: "Leader of the city", start: [0, 2] },
+      4: { clue: "Finally (Fr)", start: [0, 3] },
+      5: { clue: "50 of these", start: [0, 4] },
     },
     answer: "pavesalivebagelsmoretorts",
     owner: {
