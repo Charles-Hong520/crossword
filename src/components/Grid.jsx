@@ -1,93 +1,105 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useMemo } from 'react'
 import '@/styles/Grid.css';
 
-let Cell = ({letter, color = "#f0f0f0", pos, setPos }) => {
-    const style = {
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        width: "100%",
-        height: "100%",
-        fontFamily: "sans-serif",
-        fontSize: "300%",
-        color: "black",
-        backgroundColor: color
-    };
 
-    function handleCellClick(e) {setPos(pos);}
-    return (
-        <>
-            <p key={pos} style={style} onClick={handleCellClick}> {letter} </p>
-        </>
-    )
-};
 
 function Grid({ puzzle }) {
-  const row = puzzle.rows;
-  const col = puzzle.cols;
-  const [posRow, setPosRow] = useState(0);
-  const [posCol, setPosCol] = useState(0);
-  const [letters, setLetters] = useState(' '.repeat(row * col));
+  const ROWS = puzzle.rows;
+  const COLS = puzzle.cols;
+  const across = puzzle.across;
+  const down = puzzle.down;
+  const [currRow, setCurrRow] = useState(0);
+  const [currCol, setCurrCol] = useState(0);
+  const [letters, setLetters] = useState(' '.repeat(ROWS * COLS));
   const [highlightDir, setHighlightDir] = useState('row'); // 'row' or 'col'
 
+  function Cell({ pos }) {
+    function handleCellClick() {
+      if (currRow == pos[0] && currCol == pos[1]) {
+        console.log("same", pos);
+        setHighlightDir(highlightDir === 'row' ? 'col' : 'row');
+      } else {
+        setCurrRow(pos[0]);
+        setCurrCol(pos[1]);
+      }
+    }
+
+    const getBackgroundColor = () => {
+      if (pos[0] == currRow && pos[1] == currCol) {
+        return "yellow";
+      } else if (highlightDir == 'row' && currRow === pos[0]) {
+        return "#99ff00";
+      } else if (highlightDir == 'col' && currCol === pos[1]) {
+        return "#99ff00";
+      }
+      return "#f0f0f0";
+    }
+
+    return (
+      <>
+        <div
+          className='cell'
+          style={{ backgroundColor: getBackgroundColor() }}
+          onClick={handleCellClick}>
+
+          <p className='top-left-corner'>{clueNumberTable[pos]}</p>
+          {letters[flatten(pos[0], pos[1])]}
+
+        </div>
+      </>
+    )
+  };
   function setCurrLetter(i) {
     setLetters(letters => {
-      return letters.slice(0, posRow * col + posCol) + i + letters.slice(posRow * col + posCol + 1);
+      return letters.slice(0, currRow * COLS + currCol) + i + letters.slice(currRow * COLS + currCol + 1);
     });
   }
 
-  function setPos(pos) {
-    if(posRow==pos[0] && posCol==pos[1]) {
-      console.log("same", pos);
-      setHighlightDir(highlightDir==='row' ? 'col' : 'row');
-    } else {
-      setPosRow(pos[0]);
-      setPosCol(pos[1]);
+
+  function flatten(i, j) {
+    return i * COLS + j;
+  }
+  const clueNumberTable = useMemo(() => {
+    const startTable = {};
+    for (const num in across) {
+      startTable[across[num].start] = num;
+    }
+    for (const num in down) {
+      startTable[down[num].start] = num;
+    }
+    return startTable;
+  }, []);
+
+  const gridCells = [];
+  for (let i = 0; i < ROWS; i++) {
+    for (let j = 0; j < COLS; j++) {
+      gridCells.push(<Cell key={`${i}-${j}`} pos={[i, j]} />)
     }
   }
-
-  function getHighlightColor(i) {
-    if (i === posRow * col + posCol) {
-      return "yellow";
-    } else if (highlightDir == 'row' && posRow === Math.floor(i / col)) {
-      return "#99ff00";
-    } else if (highlightDir == 'col' && posCol == i % col) {
-      return "#99ff00";
-    }
-  }
-
-  let gridCells = Array.from({ length: row * col }).map((_, i) => {
-    return <Cell key={i}
-      pos={[Math.floor(i / col), i % col]}
-      letter={letters[i]}
-      color={getHighlightColor(i)}
-      setPos={setPos}
-    />
-  });
 
   function handleLetterInput(key) {
     // change highlighted box to next one
     setCurrLetter(key);
     if (highlightDir === 'row') {
       //find to the right, if not, go down 1 col, if not, go to 0,0
-      if (posCol === col - 1 && posRow === row - 1) {
-        setPosRow(0);
-        setPosCol(0);
-      } else if (posCol === col - 1) {
-        setPosRow(posRow + 1);
-        setPosCol(0);
+      if (currCol === COLS - 1 && currRow === ROWS - 1) {
+        setCurrRow(0);
+        setCurrCol(0);
+      } else if (currCol === COLS - 1) {
+        setCurrRow(currRow + 1);
+        setCurrCol(0);
       } else {
-        setPosCol(posCol + 1);
+        setCurrCol(currCol + 1);
       }
     } else {
-      if (posCol === col - 1 && posRow === row - 1) {
-        setPosRow(0);
-        setPosCol(0);
-      } else if (posRow === row - 1) {
-        setPosRow(0);
-        setPosCol(posCol + 1);
+      if (currCol === COLS - 1 && currRow === ROWS - 1) {
+        setCurrRow(0);
+        setCurrCol(0);
+      } else if (currRow === ROWS - 1) {
+        setCurrRow(0);
+        setCurrCol(currCol + 1);
       } else {
-        setPosRow(posRow + 1);
+        setCurrRow(currRow + 1);
       }
     }
   }
@@ -95,7 +107,7 @@ function Grid({ puzzle }) {
   useEffect(() => {
     function handleKeyDown(event) {
       const { key } = event;
-      if(event.ctrlKey) {
+      if (event.ctrlKey) {
         return;
       }
       else if (key.length === 1) {
@@ -106,35 +118,35 @@ function Grid({ puzzle }) {
             if (highlightDir === 'row') {
               setHighlightDir('col');
             } else {
-              setPosRow((posRow - 1 + row) % row);
+              setCurrRow((currRow - 1 + ROWS) % ROWS);
             }
             break;
           case 'ArrowDown':
             if (highlightDir === 'row') {
               setHighlightDir('col');
             } else {
-              setPosRow((posRow + 1) % row);
+              setCurrRow((currRow + 1) % ROWS);
             }
             break;
           case 'ArrowLeft':
             if (highlightDir === 'col') {
               setHighlightDir('row');
             } else {
-              setPosCol((posCol - 1 + col) % col);
+              setCurrCol((currCol - 1 + COLS) % COLS);
             }
             break;
           case 'ArrowRight':
             if (highlightDir === 'col') {
               setHighlightDir('row');
             } else {
-              setPosCol((posCol + 1) % col);
+              setCurrCol((currCol + 1) % COLS);
             }
             break;
           case 'Backspace':
             if (highlightDir === 'row') {
-              setPosCol(Math.max(0, posCol - 1));
+              setCurrCol(Math.max(0, currCol - 1));
             } else {
-              setPosRow(Math.max(0, posRow - 1));
+              setCurrRow(Math.max(0, currRow - 1));
             }
             setCurrLetter(' ');
         }
@@ -145,7 +157,7 @@ function Grid({ puzzle }) {
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
     };
-  }, [posRow, posCol, highlightDir]);
+  }, [currRow, currCol, highlightDir]);
 
 
 
@@ -153,10 +165,10 @@ function Grid({ puzzle }) {
     <>
       <div className="grid-container" style={
         {
-          gridTemplateColumns: Array.from({ length: col }, () => "1fr").join(" "),
-          gridTemplateRows: Array.from({ length: row }, () => "1fr").join(" "),
-          width: `${col * 125}px`,
-          height: `${row * 125}px`
+          gridTemplateRows: Array.from({ length: ROWS }, () => "1fr").join(" "),
+          gridTemplateColumns: Array.from({ length: COLS }, () => "1fr").join(" "),
+          height: `${ROWS * 125}px`,
+          width: `${COLS * 125}px`
         }
       }>
         {gridCells}

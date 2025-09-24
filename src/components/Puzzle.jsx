@@ -23,7 +23,7 @@ function Puzzle() {
       4: { clue: "Finally (Fr)", start: [0, 3] },
       5: { clue: "50 of these", start: [0, 4] },
     },
-    answer: "pavesalivebagelsmoretorts",
+    answer: "gamesavantroyfadroiteerne",
     owner: {
       across: [1, 1, 1, 1, 1, 6, 6, 6, 6, 6, 7, 7, 7, 7, 7, 8, 8, 8, 8, 8, 9, 9, 9, 9, 9],
       down: [1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5]
