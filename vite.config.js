@@ -5,6 +5,7 @@ import { resolve } from 'path';
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
+  base: "/crossword/",
   resolve: {
     alias: {
       // Define your aliases here
@@ -13,5 +14,4 @@ export default defineConfig({
       // 'components': resolve(__dirname, 'src/components'),
     },
   },
-  base:"/crossword"
 });
