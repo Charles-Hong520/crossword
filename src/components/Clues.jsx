@@ -14,7 +14,6 @@ function Clues({ puzzle, direction, setDirection, currPos, setCurrPos }) {
     } else {
       setCurrPos([...down[clueNumber].start]);
     }
-
   }
 
   function getBackgroundColor(number, dir) {
@@ -25,7 +24,7 @@ function Clues({ puzzle, direction, setDirection, currPos, setCurrPos }) {
       currClue = owner.down[currPos[0] * puzzle.cols + currPos[1]];
     }
     if (currClue === number && dir === direction) {
-      backgroundColor = "green";
+      backgroundColor = "var(--highlight-color)";
     } else {
       backgroundColor = "transparent";
     }

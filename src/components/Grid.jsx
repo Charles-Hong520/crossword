@@ -24,11 +24,12 @@ function Grid({ puzzle, direction, setDirection, currPos, setCurrPos }) {
       if (pos[0] === currPos[0] && pos[1] === currPos[1]) {
         return "yellow";
       } else if (direction === 'ACROSS' && currPos[0] === pos[0]) {
-        return "#99ff00";
+        return "var(--highlight-color)";
       } else if (direction === 'DOWN' && currPos[1] === pos[1]) {
-        return "#99ff00";
+        return "var(--highlight-color)";
+      } else {
+        return "#f0f0f0";
       }
-      return "#f0f0f0";
     }
 
     return (
@@ -126,7 +127,7 @@ function Grid({ puzzle, direction, setDirection, currPos, setCurrPos }) {
             if (direction === 'DOWN') {
               setDirection('ACROSS');
             } else {
-              setCurrPos([currPos[0], (currPos[1] - 1 + COLS) % COLS]);
+              setCurrPos([currPos[0], (currPos[1] - 1 + COLS) % COLaS]);
             }
             break;
           case 'ArrowRight':
@@ -160,7 +161,7 @@ function Grid({ puzzle, direction, setDirection, currPos, setCurrPos }) {
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
     };
-  }, [currPos]);
+  }, [currPos, direction]);
 
 
 
