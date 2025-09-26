@@ -1,7 +1,6 @@
 {
   "name": "crossyword",
-  "homepage": "https://Charles-Hong520.github.io/crossword/",
-  "private": true,
+  "homepage": "https://charles-hong520.github.io/crossword",
   "version": "0.0.0",
   "type": "module",
   "scripts": {
