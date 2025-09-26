@@ -3,14 +3,24 @@
     grid-template-columns: 1fr 1fr;
 }
 
-ul {
+.clue-container {
     display: flex;
     flex-direction: column;
     list-style-type: none;
+    margin: 5%;
+    cursor: default; 
 }
 
-li {
+.banner-name {
+    width: 90%;
+    padding: 10%;
+    font-weight: 600;
+    font-size: 20px;
+}
+
+.clue-item {
+    padding: 10%;
     width: 90%;
     word-wrap: break-word;
-        /* Wrap long words that exceed the max-width */
+    /* Wrap long words that exceed the max-width */
 }

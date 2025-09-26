@@ -1,35 +1,31 @@
 import { useEffect, useState, useMemo } from 'react'
 import '@/styles/Grid.css';
 
+function Grid({ puzzle, direction, setDirection, currPos, setCurrPos }) {
 
-
-function Grid({ puzzle }) {
   const ROWS = puzzle.rows;
   const COLS = puzzle.cols;
   const across = puzzle.across;
   const down = puzzle.down;
-  const [currRow, setCurrRow] = useState(0);
-  const [currCol, setCurrCol] = useState(0);
+
   const [letters, setLetters] = useState(' '.repeat(ROWS * COLS));
-  const [highlightDir, setHighlightDir] = useState('row'); // 'row' or 'col'
 
   function Cell({ pos }) {
     function handleCellClick() {
-      if (currRow == pos[0] && currCol == pos[1]) {
+      if (currPos[0] === pos[0] && currPos[1] === pos[1]) {
         console.log("same", pos);
-        setHighlightDir(highlightDir === 'row' ? 'col' : 'row');
+        setDirection(direction === 'ACROSS' ? 'DOWN' : 'ACROSS');
       } else {
-        setCurrRow(pos[0]);
-        setCurrCol(pos[1]);
+        setCurrPos([...pos]);
       }
     }
 
     const getBackgroundColor = () => {
-      if (pos[0] == currRow && pos[1] == currCol) {
+      if (pos[0] === currPos[0] && pos[1] === currPos[1]) {
         return "yellow";
-      } else if (highlightDir == 'row' && currRow === pos[0]) {
+      } else if (direction === 'ACROSS' && currPos[0] === pos[0]) {
         return "#99ff00";
-      } else if (highlightDir == 'col' && currCol === pos[1]) {
+      } else if (direction === 'DOWN' && currPos[1] === pos[1]) {
         return "#99ff00";
       }
       return "#f0f0f0";
@@ -43,15 +39,16 @@ function Grid({ puzzle }) {
           onClick={handleCellClick}>
 
           <p className='top-left-corner'>{clueNumberTable[pos]}</p>
-          {letters[flatten(pos[0], pos[1])]}
+          {letters[flatten(...pos)]}
 
         </div>
       </>
     )
   };
+
   function setCurrLetter(i) {
     setLetters(letters => {
-      return letters.slice(0, currRow * COLS + currCol) + i + letters.slice(currRow * COLS + currCol + 1);
+      return letters.slice(0, flatten(...currPos)) + i + letters.slice(flatten(...currPos) + 1);
     });
   }
 
@@ -77,34 +74,31 @@ function Grid({ puzzle }) {
     }
   }
 
-  function handleLetterInput(key) {
-    // change highlighted box to next one
-    setCurrLetter(key);
-    if (highlightDir === 'row') {
-      //find to the right, if not, go down 1 col, if not, go to 0,0
-      if (currCol === COLS - 1 && currRow === ROWS - 1) {
-        setCurrRow(0);
-        setCurrCol(0);
-      } else if (currCol === COLS - 1) {
-        setCurrRow(currRow + 1);
-        setCurrCol(0);
-      } else {
-        setCurrCol(currCol + 1);
-      }
-    } else {
-      if (currCol === COLS - 1 && currRow === ROWS - 1) {
-        setCurrRow(0);
-        setCurrCol(0);
-      } else if (currRow === ROWS - 1) {
-        setCurrRow(0);
-        setCurrCol(currCol + 1);
-      } else {
-        setCurrRow(currRow + 1);
-      }
-    }
-  }
+
 
   useEffect(() => {
+    function handleLetterInput(key) {
+      // change highlighted box to next one
+      setCurrLetter(key);
+      if (direction === 'ACROSS') {
+        //find to the right, if not, go down 1 col, if not, go to 0,0
+        if (currPos[1] === COLS - 1 && currPos[0] === ROWS - 1) {
+          setCurrPos([0, 0]);
+        } else if (currPos[1] === COLS - 1) {
+          setCurrPos([currPos[0] + 1, 0]);
+        } else {
+          setCurrPos([currPos[0], currPos[1] + 1]);
+        }
+      } else {
+        if (currPos[1] === COLS - 1 && currPos[0] === ROWS - 1) {
+          setCurrPos([0, 0]);
+        } else if (currPos[0] === ROWS - 1) {
+          setCurrPos([0, currPos[1] + 1]);
+        } else {
+          setCurrPos([currPos[0] + 1, currPos[1]]);
+        }
+      }
+    }
     function handleKeyDown(event) {
       const { key } = event;
       if (event.ctrlKey) {
@@ -115,49 +109,58 @@ function Grid({ puzzle }) {
       } else {
         switch (key) {
           case 'ArrowUp':
-            if (highlightDir === 'row') {
-              setHighlightDir('col');
+            if (direction === 'ACROSS') {
+              setDirection('DOWN');
             } else {
-              setCurrRow((currRow - 1 + ROWS) % ROWS);
+              setCurrPos([(currPos[0] - 1 + ROWS) % ROWS, currPos[1]]);
             }
             break;
           case 'ArrowDown':
-            if (highlightDir === 'row') {
-              setHighlightDir('col');
+            if (direction === 'ACROSS') {
+              setDirection('DOWN');
             } else {
-              setCurrRow((currRow + 1) % ROWS);
+              setCurrPos([(currPos[0] + 1) % ROWS, currPos[1]]);
             }
             break;
           case 'ArrowLeft':
-            if (highlightDir === 'col') {
-              setHighlightDir('row');
+            if (direction === 'DOWN') {
+              setDirection('ACROSS');
             } else {
-              setCurrCol((currCol - 1 + COLS) % COLS);
+              setCurrPos([currPos[0], (currPos[1] - 1 + COLS) % COLS]);
             }
             break;
           case 'ArrowRight':
-            if (highlightDir === 'col') {
-              setHighlightDir('row');
+            if (direction === 'DOWN') {
+              setDirection('ACROSS');
             } else {
-              setCurrCol((currCol + 1) % COLS);
+              setCurrPos([currPos[0], (currPos[1] + 1) % COLS]);
             }
             break;
           case 'Backspace':
-            if (highlightDir === 'row') {
-              setCurrCol(Math.max(0, currCol - 1));
+            if (direction === 'ACROSS') {
+              setCurrPos([currPos[0], Math.max(0, currPos[1] - 1)]);
             } else {
-              setCurrRow(Math.max(0, currRow - 1));
+              setCurrPos([Math.max(0, currPos[0] - 1), currPos[1]]);
             }
             setCurrLetter(' ');
+            break;
+          case 'Delete':
+            if (direction === 'ACROSS') {
+              setCurrPos([currPos[0], Math.min(COLS - 1, currPos[1] + 1)]);
+            } else {
+              setCurrPos([Math.min(ROWS - 1, currPos[0] + 1), currPos[1]]);
+            }
+            setCurrLetter(' ');
+            break;
         }
       }
     }
-
+    console.log(currPos);
     document.addEventListener("keydown", handleKeyDown);
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
     };
-  }, [currRow, currCol, highlightDir]);
+  }, [currPos]);
 
 
 

@@ -3,25 +3,26 @@ import Grid from '@/components/Grid'
 import Clues from '@/components/Clues'
 
 function Puzzle() {
-  const [highlighted, setHighlighted] = useState([]);
+  const [direction, setDirection] = useState("ACROSS");
+  const [currPos, setCurrPos] = useState([0, 0]);
 
   const puzzle = {
     title: "New Yorker 2/28/2025",
     rows: 5,
     cols: 5,
     across: {
-      1: { clue: "Video ___", start: [0, 0] },
-      6: { clue: "Before (Fr)", start: [1, 0] },
-      7: { clue: "Arabic name meaning kind", start: [2, 0] },
-      8: { clue: "Right (Fr)", start: [3, 0] },
-      9: { clue: "Eagle (archaic)", start: [4, 0] }
+      1: { clue: "Video ___", start: [0, 0], end: [0, 4] },
+      6: { clue: "Before (Fr)", start: [1, 0], end: [1, 4] },
+      7: { clue: "Arabic name meaning kind", start: [2, 0], end: [2, 4] },
+      8: { clue: "Right (Fr)", start: [3, 0], end: [3, 4] },
+      9: { clue: "Eagle (archaic)", start: [4, 0], end: [4, 4] }
     },
     down: {
-      1: { clue: "Fencers say, “En ___” (Fr)", start: [0, 0] },
-      2: { clue: "Stingy (Fr)", start: [0, 1] },
-      3: { clue: "Leader of the city", start: [0, 2] },
-      4: { clue: "Finally (Fr)", start: [0, 3] },
-      5: { clue: "50 of these", start: [0, 4] },
+      1: { clue: "Fencers say, “En ___” (Fr)", start: [0, 0], end: [4, 0] },
+      2: { clue: "Stingy (Fr)", start: [0, 1], end: [4, 1] },
+      3: { clue: "Leader of the city", start: [0, 2], end: [4, 2] },
+      4: { clue: "Finally (Fr)", start: [0, 3], end: [4, 3] },
+      5: { clue: "50 of these", start: [0, 4], end: [4, 4] },
     },
     answer: "gamesavantroyfadroiteerne",
     owner: {
@@ -38,10 +39,17 @@ function Puzzle() {
       <div style={containerStyle}>
         <Grid
           puzzle={puzzle}
+          direction={direction}
+          setDirection={setDirection}
+          currPos={currPos}
+          setCurrPos={setCurrPos}
         />
         <Clues
           puzzle={puzzle}
-          setHighlighted={setHighlighted}
+          direction={direction}
+          setDirection={setDirection}
+          currPos={currPos}
+          setCurrPos={setCurrPos}
         />
       </div>
     </>
