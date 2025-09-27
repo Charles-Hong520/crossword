@@ -13,14 +13,16 @@
 
 .banner-name {
     width: 90%;
-    padding: 10%;
+    padding: 0 10%;
+    padding-bottom: 5%;
     font-weight: 600;
-    font-size: 20px;
+    font-size: 24px;
 }
 
 .clue-item {
-    padding: 10%;
+    padding: 5% 10%;
     width: 90%;
     word-wrap: break-word;
     /* Wrap long words that exceed the max-width */
+    font-size: 20px;
 }

@@ -1,36 +1,33 @@
 import { useEffect, useState, useMemo } from 'react'
 import '@/styles/Grid.css';
 
-function Grid({ puzzle, direction, setDirection, currPos, setCurrPos }) {
+function Grid({ puzzle, direction, setDirection, currPos, setCurrPos, letters, setLetters }) {
 
   const ROWS = puzzle.rows;
   const COLS = puzzle.cols;
   const across = puzzle.across;
   const down = puzzle.down;
 
-  const [letters, setLetters] = useState(' '.repeat(ROWS * COLS));
-
   function Cell({ pos }) {
     function handleCellClick() {
       if (currPos[0] === pos[0] && currPos[1] === pos[1]) {
-        console.log("same", pos);
         setDirection(direction === 'ACROSS' ? 'DOWN' : 'ACROSS');
       } else {
         setCurrPos([...pos]);
       }
-    }
+    };
 
     const getBackgroundColor = () => {
       if (pos[0] === currPos[0] && pos[1] === currPos[1]) {
-        return "yellow";
+        return "#ffff28";
       } else if (direction === 'ACROSS' && currPos[0] === pos[0]) {
-        return "var(--highlight-color)";
+        return "#92d250";
       } else if (direction === 'DOWN' && currPos[1] === pos[1]) {
-        return "var(--highlight-color)";
+        return "#92d250";
       } else {
         return "#f0f0f0";
       }
-    }
+    };
 
     return (
       <>
@@ -83,7 +80,7 @@ function Grid({ puzzle, direction, setDirection, currPos, setCurrPos }) {
       setCurrLetter(key);
       if (direction === 'ACROSS') {
         //find to the right, if not, go down 1 col, if not, go to 0,0
-        if (currPos[1] === COLS - 1 && currPos[0] === ROWS - 1) {
+        if (currPos[0] === ROWS - 1 && currPos[1] === COLS - 1) {
           setCurrPos([0, 0]);
         } else if (currPos[1] === COLS - 1) {
           setCurrPos([currPos[0] + 1, 0]);
@@ -91,7 +88,7 @@ function Grid({ puzzle, direction, setDirection, currPos, setCurrPos }) {
           setCurrPos([currPos[0], currPos[1] + 1]);
         }
       } else {
-        if (currPos[1] === COLS - 1 && currPos[0] === ROWS - 1) {
+        if (currPos[0] === ROWS - 1 && currPos[1] === COLS - 1) {
           setCurrPos([0, 0]);
         } else if (currPos[0] === ROWS - 1) {
           setCurrPos([0, currPos[1] + 1]);
@@ -127,7 +124,7 @@ function Grid({ puzzle, direction, setDirection, currPos, setCurrPos }) {
             if (direction === 'DOWN') {
               setDirection('ACROSS');
             } else {
-              setCurrPos([currPos[0], (currPos[1] - 1 + COLS) % COLaS]);
+              setCurrPos([currPos[0], (currPos[1] - 1 + COLS) % COLS]);
             }
             break;
           case 'ArrowRight':
@@ -156,7 +153,6 @@ function Grid({ puzzle, direction, setDirection, currPos, setCurrPos }) {
         }
       }
     }
-    console.log(currPos);
     document.addEventListener("keydown", handleKeyDown);
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
@@ -171,8 +167,8 @@ function Grid({ puzzle, direction, setDirection, currPos, setCurrPos }) {
         {
           gridTemplateRows: Array.from({ length: ROWS }, () => "1fr").join(" "),
           gridTemplateColumns: Array.from({ length: COLS }, () => "1fr").join(" "),
-          height: `${ROWS * 125}px`,
-          width: `${COLS * 125}px`
+          height: `${ROWS * 110}px`,
+          width: `${COLS * 110}px`
         }
       }>
         {gridCells}

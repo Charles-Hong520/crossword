@@ -1,6 +1,4 @@
-import { useState } from 'react';
 import '@/styles/Clues.css';
-
 
 function Clues({ puzzle, direction, setDirection, currPos, setCurrPos }) {
   const across = puzzle.across;
@@ -24,7 +22,7 @@ function Clues({ puzzle, direction, setDirection, currPos, setCurrPos }) {
       currClue = owner.down[currPos[0] * puzzle.cols + currPos[1]];
     }
     if (currClue === number && dir === direction) {
-      backgroundColor = "var(--highlight-color)";
+      backgroundColor = "#6fa535ff";
     } else {
       backgroundColor = "transparent";
     }
@@ -59,7 +57,6 @@ function Clues({ puzzle, direction, setDirection, currPos, setCurrPos }) {
         <ClueColumn
           clues={down}
           bannerName={"DOWN"} />
-
       </div>
     </>
   )

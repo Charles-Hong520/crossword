@@ -1,0 +1,27 @@
+.puzzle-content {
+    display: flex;
+    flex-direction: row;
+}
+
+.title-bar {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    font-weight: 500;
+    font-size: 48px;
+    font-family: "Google Sans Code", monospace;
+    font-optical-sizing: auto;
+    font-style: normal;
+    letter-spacing: 5px;
+}
+
+.win {
+    margin-left: 10%;
+     animation: color-change 1s infinite;
+}
+
+@keyframes color-change {
+  0% { color: red; }
+  50% { color: blue; }
+  100% { color: red; }
+}
