@@ -20,7 +20,7 @@ function Puzzle() {
     <>
       <div className='title-bar'>
         {data.title}
-        {hasWon && <p className='win'>tu gagnes</p>}
+        {hasWon && <p className='win'>C'EST COMPLET !</p>}
       </div>
       <div className='puzzle-content'>
         <Grid
