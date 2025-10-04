@@ -15,7 +15,7 @@ function Puzzle() {
     queryFn: () =>
       fetch(`http://localhost:5050${import.meta.env.BASE_URL}/${puzzle_number}`).then((res) =>
         res.json(),
-  ),
+  ),staleTime: 1000 * 60 * 60 * 24,
 })
 
 useEffect(() => {
