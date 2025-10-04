@@ -8,17 +8,15 @@ import NotFound from '@/components/NotFound'
 import Form from '@/components/Form'
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
-const base = import.meta.env.BASE_URL;
 const queryClient = new QueryClient();
 
-
 const router = createBrowserRouter([
-  { path: base + "", element: <Home /> },
-  { path: base + "puzzle", element: <Puzzle /> },
-  { path: base + "puzzle/:puzzle_number", element: <Puzzle /> },
-  { path: base + "upload", element: <Form /> },
+  { path: "/", element: <Home /> },
+  { path: "/puzzle", element: <Puzzle /> },
+  { path: "/puzzle/:puzzle_number", element: <Puzzle /> },
+  { path: "/upload", element: <Form /> },
   { path: "*", element: <NotFound /> },
-]);
+], { basename: import.meta.env.BASE_URL });
 
 
 createRoot(document.getElementById('root')).render(

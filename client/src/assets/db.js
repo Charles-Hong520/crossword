@@ -1,6 +1,6 @@
 // import { writeFileSync } from 'fs';
 let data = {
-    title: "Fromage",
+    title: "Fromage 2",
     rows: 5,
     cols: 5,
     across: {
@@ -26,18 +26,18 @@ let data = {
 function inputAndWrite() {
     let rawClues = `
 ACROSS
-Twenty (Fr)
-Flying
-Cute (Sp)
-Monday (Fr)
-Chevrolet hybrid Corvettes
+Fix code
+Match a bet
+Dutch cheese
+I love the city that never sleeps
+Snow (Fr)
 
 DOWN
-City (Fr)
-Intermittent napping is usually required
-Grandma
-Excited
-Three (Fr)
+Start eating
+School (Fr)
+Language in Papua New Guinea 
+Ultimately luck determines your gains
+Ice cream (Fr)
 `.split("\n");
     const removeStrings = ["", "ACROSS", "DOWN"];
     rawClues = rawClues.filter(element => !removeStrings.includes(element));

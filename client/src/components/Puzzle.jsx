@@ -11,9 +11,9 @@ function Puzzle() {
   const [hasWon, setHasWon] = useState(false);
   const [letters, setLetters] = useState('');
   const { status, isPending, error, data } = useQuery({
-    queryKey: ['repoData'],
+    queryKey: [`puzzle_number ${puzzle_number}`],
     queryFn: () =>
-      fetch(`http://localhost:5050/crossword/${puzzle_number}`).then((res) =>
+      fetch(`http://localhost:5050${import.meta.env.BASE_URL}/${puzzle_number}`).then((res) =>
         res.json(),
   ),
 })
@@ -36,7 +36,7 @@ if (error) return 'An error has occurred: ' + error.message;
     <>
       <div className='title-bar'>
         {data.title}
-        {hasWon && <p className='win'>C'EST COMPLET !</p>}
+        {hasWon && <p className='win'>C'EST FINI !</p>}
       </div>
       <div className='puzzle-content'>
         <Grid
