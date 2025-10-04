@@ -14,7 +14,7 @@ app.use(cors(corsOptions));
 app.use(express.json());
 
 // Load the /posts routes
-app.use("/crossword", posts);
+app.use("/", posts);
 
 // Global error handling
 app.use((err, _req, res, next) => {

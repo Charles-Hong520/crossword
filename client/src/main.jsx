@@ -12,12 +12,12 @@ const queryClient = new QueryClient();
 
 const router = createBrowserRouter([
   { path: "/", element: <Home /> },
-  { path: "/puzzle", element: <Puzzle /> },
   { path: "/puzzle/:puzzle_number", element: <Puzzle /> },
   { path: "/upload", element: <Form /> },
   { path: "*", element: <NotFound /> },
 ], { basename: import.meta.env.BASE_URL });
 
+console.log(import.meta.env.VITE_BACKEND_URL);
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>

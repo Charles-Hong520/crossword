@@ -6,7 +6,6 @@ const Form = () => {
     const [title, setTitle] = useState('');
     const [answer, setAnswer] = useState('');
     const [errorMessages, setErrorMessages] = useState([]);
-    const backendUrl = 'http://localhost:5050/crossword/mini'; // POST
 
     const data = {
         title: "",
@@ -64,10 +63,10 @@ const Form = () => {
 
     const handleSubmit = async (event) => {
         event.preventDefault(); // Prevent default form submission behavior
-        // if(errorMessages.length != 0) {
-        //     alert('fix the inputs Ani');
-        //     return;
-        // } 
+        if(errorMessages.length != 0) {
+            alert('fix the inputs Ani');
+            return;
+        } 
         const cluesData = {
             across: acrossClues.split('\n').filter(line => line.trim() !== ''),
             down: downClues.split('\n').filter(line => line.trim() !== ''),
@@ -84,7 +83,7 @@ const Form = () => {
             data.down[d[i]].clue = cluesData.down[i];
         }
         try {
-            const response = await fetch(backendUrl, {
+            const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/mini`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

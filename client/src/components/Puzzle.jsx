@@ -5,32 +5,35 @@ import '@/styles/Puzzle.css'
 import { useParams } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query';
 function Puzzle() {
-  const {puzzle_number} = useParams();
+  const { puzzle_number } = useParams();
   const [direction, setDirection] = useState("ACROSS");
   const [currPos, setCurrPos] = useState([0, 0]);
   const [hasWon, setHasWon] = useState(false);
   const [letters, setLetters] = useState('');
+
+  const fetchURL = `${import.meta.env.VITE_BACKEND_URL}/${puzzle_number}`;
+
   const { status, isPending, error, data } = useQuery({
     queryKey: [`puzzle_number ${puzzle_number}`],
     queryFn: () =>
-      fetch(`http://localhost:5050${import.meta.env.BASE_URL}/${puzzle_number}`).then((res) =>
-        res.json(),
-  ),staleTime: 1000 * 60 * 60 * 24,
-})
+      fetch(fetchURL)
+        .then((res) => res.json(),
+        ), staleTime: 1000 * 60 * 60 * 24,
+  })
 
-useEffect(() => {
-  if(status === 'success' && data && letters.length != data.rows * data.cols) {
-    setLetters(' '.repeat(data.rows * data.cols));
-  }
-  if (data && 'answer' in data && letters === data.answer) { // Ensure it only sets once
-    setHasWon(true);
-  }
-  
-}, [letters, data]);
+  useEffect(() => {
+    if (status === 'success' && data && letters.length != data.rows * data.cols) {
+      setLetters(' '.repeat(data.rows * data.cols));
+    }
+    if (data && 'answer' in data && letters === data.answer) { // Ensure it only sets once
+      setHasWon(true);
+    }
+
+  }, [letters, data]);
 
 
-if (isPending) return 'Loading...';
-if (error) return 'An error has occurred: ' + error.message;
+  if (isPending) return 'Loading...';
+  if (error) return 'An error has occurred: ' + error.message;
 
   return (
     <>

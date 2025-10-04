@@ -6,6 +6,7 @@ import { resolve } from 'path';
 export default defineConfig({
   plugins: [react()],
   base: "/",
+  
   resolve: {
     alias: {
       // Define your aliases here
