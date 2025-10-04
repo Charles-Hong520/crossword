@@ -25,7 +25,7 @@ router.get("/:puzzle_number", async (req, res) => {
 });
 
 // Add a new document to the collection
-router.post("/", async (req, res) => {
+router.post("/mini", async (req, res) => {
   let collection = await db.collection("puzzles");
   let newDocument = req.body;
   newDocument.puzzle_number = await getNextSequenceValue('puzzle_number');

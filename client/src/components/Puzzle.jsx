@@ -2,20 +2,36 @@ import { useState, useEffect } from 'react'
 import Grid from '@/components/Grid'
 import Clues from '@/components/Clues'
 import '@/styles/Puzzle.css'
-import data from '@/assets/db.js'
-
+import { useParams } from 'react-router-dom'
+import { useQuery } from '@tanstack/react-query';
 function Puzzle() {
+  const {puzzle_number} = useParams();
   const [direction, setDirection] = useState("ACROSS");
   const [currPos, setCurrPos] = useState([0, 0]);
   const [hasWon, setHasWon] = useState(false);
-  const [letters, setLetters] = useState(' '.repeat(data.rows * data.cols));
+  const [letters, setLetters] = useState('');
+  const { status, isPending, error, data } = useQuery({
+    queryKey: ['repoData'],
+    queryFn: () =>
+      fetch(`http://localhost:5050/crossword/${puzzle_number}`).then((res) =>
+        res.json(),
+  ),
+})
 
-  useEffect(() => {
-    if (letters === data.answer) { // Ensure it only sets once
-      setHasWon(true);
-    }
-  }, [letters]);
+useEffect(() => {
+  if(status === 'success' && data && letters.length != data.rows * data.cols) {
+    setLetters(' '.repeat(data.rows * data.cols));
+  }
+  if (data && 'answer' in data && letters === data.answer) { // Ensure it only sets once
+    setHasWon(true);
+  }
   
+}, [letters, data]);
+
+
+if (isPending) return 'Loading...';
+if (error) return 'An error has occurred: ' + error.message;
+
   return (
     <>
       <div className='title-bar'>

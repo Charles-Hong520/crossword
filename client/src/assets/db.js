@@ -1,3 +1,4 @@
+// import { writeFileSync } from 'fs';
 let data = {
     title: "Fromage",
     rows: 5,
@@ -22,7 +23,7 @@ let data = {
         down: [1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5]
     }
 };
-function input() {
+function inputAndWrite() {
     let rawClues = `
 ACROSS
 Twenty (Fr)
@@ -40,26 +41,24 @@ Three (Fr)
 `.split("\n");
     const removeStrings = ["", "ACROSS", "DOWN"];
     rawClues = rawClues.filter(element => !removeStrings.includes(element));
-    console.log(rawClues);
     const a = [1, 6, 7, 8, 9];
     const d = [1, 2, 3, 4, 5];
-
+    
     for (let i = 0; i < 5; i++) {
         data.across[a[i]].clue = rawClues[i];
         data.down[d[i]].clue = rawClues[i + 5];
     }
+    data.answer = "1111111111111111111111111";
+    const jsonString = JSON.stringify(data, null, 2); // Convert object to pretty-printed JSON string
+    try {
+      writeFileSync('output.json', jsonString); // Write the JSON string to a file named 'output.json'
+      console.log('Object successfully written to output.json');
+    } catch (error) {
+      console.error('Error writing file:', error);
+    }
 }
 
-// input(); // comment out if keep original
-// import { writeFileSync } from 'fs'; // Import the file system module
-
-// const jsonString = JSON.stringify(data, null, 2); // Convert object to pretty-printed JSON string
-// try {
-//   writeFileSync('output.json', jsonString); // Write the JSON string to a file named 'output.json'
-//   console.log('Object successfully written to output.json');
-// } catch (error) {
-//   console.error('Error writing file:', error);
-// }
+// inputAndWrite(); // comment out if keep original
 
 console.log(data);
 export default data;

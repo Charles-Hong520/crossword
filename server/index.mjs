@@ -5,8 +5,8 @@ import posts from "./posts.mjs";
 
 const PORT = process.env.PORT || 5050;
 const app = express();
-
-app.use(cors());
+const allowedOrigins = ['http://localhost:5173', 'https://charles-hong520.github.io/crossword/'];
+app.use(cors({origin: allowedOrigins}));
 app.use(express.json());
 
 // Load the /posts routes
