@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import '@/styles/Form.css';
+import { useNavigate  } from 'react-router-dom';
 const Form = () => {
     const [acrossClues, setAcrossClues] = useState('');
     const [downClues, setDownClues] = useState('');
     const [title, setTitle] = useState('');
     const [answer, setAnswer] = useState('');
     const [errorMessages, setErrorMessages] = useState([]);
-
+    const navigate = useNavigate;
     const data = {
         title: "",
         rows: 5,
@@ -63,10 +64,10 @@ const Form = () => {
 
     const handleSubmit = async (event) => {
         event.preventDefault(); // Prevent default form submission behavior
-        if(errorMessages.length != 0) {
+        if (errorMessages.length != 0) {
             alert('fix the inputs Ani');
             return;
-        } 
+        }
         const cluesData = {
             across: acrossClues.split('\n').filter(line => line.trim() !== ''),
             down: downClues.split('\n').filter(line => line.trim() !== ''),
@@ -92,17 +93,14 @@ const Form = () => {
             });
 
             if (response.ok) {
-                console.log('Clues submitted successfully!');
-                // Optionally, clear the form or show a success message
-                setTitle('');
-                setAcrossClues('');
-                setDownClues('');
-                setAnswer('');
+                navigate('/');
             } else {
                 console.error('Failed to submit clues:', response.statusText);
+                setErrorMessages(errorMessages => [...errorMessages, <div>failed to submit data, try again</div>]);
             }
         } catch (error) {
             console.error('Error submitting clues:', error);
+            setErrorMessages(errorMessages => [...errorMessages, <div>failed to submit data, try again</div>]);
         }
     };
 

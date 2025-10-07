@@ -1,0 +1,14 @@
+.home-logo {
+    width: 400px;
+    
+}
+.title-text {
+    text-align: center;
+    font-size: 5em;
+}
+.title-container {
+    display: flex;
+   flex-direction: column;
+   align-items: center;
+   padding-top: 2em;
+}

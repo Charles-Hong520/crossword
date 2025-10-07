@@ -1,14 +1,18 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom';
 import '@/styles/Home.css'
-const base = import.meta.env.BASE_URL;
+import logo from '@/assets/logo.svg';
+import Header from '@/components/Header';
 function Home() {
     return (
         <>
-            <div className='title-bar'>
-                home
+            <div className='title-container'>
+                <img className='home-logo' src={logo} alt='Mots Crois&eacute;s' />
+                <h1 className='title-text'>
+                    Mots Crois&eacute;s
+                </h1>
             </div>
-             <Link to={"/upload"}>form</Link>
+            <Header notHome={false} />
         </>
     )
 }

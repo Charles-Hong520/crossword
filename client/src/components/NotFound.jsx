@@ -1,6 +1,5 @@
 import { Link } from 'react-router-dom';
 
-const base = import.meta.env.BASE_URL;
 
 function NotFound() {
     return (

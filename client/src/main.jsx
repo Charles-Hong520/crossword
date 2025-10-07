@@ -6,18 +6,25 @@ import Puzzle from '@/components/Puzzle'
 import Home from '@/components/Home'
 import NotFound from '@/components/NotFound'
 import Form from '@/components/Form'
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import Layout from '@/components/Layout'
+import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
+import PuzzleList from '@/components/PuzzleList';
 
 const queryClient = new QueryClient();
 
 const router = createBrowserRouter([
-  { path: "/", element: <Home /> },
-  { path: "/puzzle/:puzzle_number", element: <Puzzle /> },
-  { path: "/upload", element: <Form /> },
-  { path: "*", element: <NotFound /> },
-], { basename: import.meta.env.BASE_URL });
+  {
+    element: <Layout />,
+    children: [
+      { path: "/puzzle", element: <PuzzleList /> },
+      { path: "/puzzle/:puzzle_number", element: <Puzzle /> },
+      { path: "/upload", element: <Form /> },
+      { path: "*", element: <NotFound /> },
+    ]
+  },
+  { path: "/", element: <Home />},
+]);
 
-console.log(import.meta.env.VITE_BACKEND_URL);
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
