@@ -13,9 +13,16 @@ async function getNextSequenceValue(sequenceName) {
   return sequenceDocument.sequence_value;
 }
 
+// Get list of puzzles
+router.get("/puzzle", async (req, res) => {
+  let collection = await db.collection("puzzles")
+  let result = await collection.find({}).sort({puzzle_number : -1}).limit(10).toArray()
+  if (!result) res.send("Not found").status(404);
+  else res.send(result).status(200);
+});
 
-// Get a single post
-router.get("/:puzzle_number", async (req, res) => {
+// Get a single puzzle
+router.get("/puzzle/:puzzle_number", async (req, res) => {
   let collection = await db.collection("puzzles");
   let puzzle_number = +req.params.puzzle_number;
   let query = { puzzle_number: puzzle_number };
@@ -34,3 +41,5 @@ router.post("/mini", async (req, res) => {
 });
 
 export default router;
+
+

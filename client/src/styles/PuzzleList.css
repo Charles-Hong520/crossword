@@ -1,0 +1,12 @@
+.puzzle-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1em;
+}
+
+.puzzle-info-container {
+    padding: .5em;
+    border: 1px solid #ccc;
+    color: var(--text-color);
+    text-decoration: none;
+}

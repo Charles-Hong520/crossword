@@ -11,7 +11,7 @@ function Puzzle() {
   const [hasWon, setHasWon] = useState(false);
   const [letters, setLetters] = useState('');
 
-  const fetchURL = `${import.meta.env.VITE_BACKEND_URL}/${puzzle_number}`;
+  const fetchURL = `${import.meta.env.VITE_BACKEND_URL}/puzzle/${puzzle_number}`;
 
   const { status, isPending, error, data } = useQuery({
     queryKey: [`puzzle_number ${puzzle_number}`],
@@ -19,7 +19,7 @@ function Puzzle() {
       fetch(fetchURL)
         .then((res) => res.json(),
         ), staleTime: 1000 * 60 * 60 * 24,
-  })
+  });
 
   useEffect(() => {
     if (status === 'success' && data && letters.length != data.rows * data.cols) {
@@ -37,6 +37,8 @@ function Puzzle() {
 
   return (
     <>
+    <div className='puzzle-container'>
+      
       <div className='title-bar'>
         {data.title}
         {hasWon && <p className='win'>C'EST FINI !</p>}
@@ -50,15 +52,16 @@ function Puzzle() {
           setCurrPos={setCurrPos}
           letters={letters}
           setLetters={setLetters}
-        />
+          />
         <Clues
           puzzle={data}
           direction={direction}
           setDirection={setDirection}
           currPos={currPos}
           setCurrPos={setCurrPos}
-        />
+          />
       </div>
+          </div>
 
     </>
   )
