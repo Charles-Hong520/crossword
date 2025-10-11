@@ -1,6 +1,6 @@
 .puzzle-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
     gap: 1em;
 }
 
@@ -9,4 +9,9 @@
     border: 1px solid #ccc;
     color: var(--text-color);
     text-decoration: none;
+}
+
+.puzzle-info-container:hover {
+    background-color: #6fa535ff;
+    transition: background-color 0.3s ease;
 }

@@ -2,7 +2,7 @@
     display: flex;
     justify-content: space-around;
     align-items: center;
-    height: 10vh;
+    height: 12vh;
     margin: 1em;
 }
 
@@ -16,7 +16,8 @@
 }
 
 .header-link:hover {
-    background-color: gray;
+    background-color: #6fa535ff;
+    transition: background-color 0.3s ease;
 }
 
 .header-logo {

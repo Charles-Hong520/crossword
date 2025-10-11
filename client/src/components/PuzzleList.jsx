@@ -5,7 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 function PuzzleList() {
     const fetchURL = `${import.meta.env.VITE_BACKEND_URL}/puzzle`;
 
-    const { status, isPending, error, data } = useQuery({
+    const { isPending, error, data } = useQuery({
         queryKey: ['puzzle list'],
         queryFn: () =>
             fetch(fetchURL)

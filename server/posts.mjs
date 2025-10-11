@@ -16,7 +16,7 @@ async function getNextSequenceValue(sequenceName) {
 // Get list of puzzles
 router.get("/puzzle", async (req, res) => {
   let collection = await db.collection("puzzles")
-  let result = await collection.find({}).sort({puzzle_number : -1}).limit(10).toArray()
+  let result = await collection.find({}).sort({puzzle_number : -1}).toArray()
   if (!result) res.send("Not found").status(404);
   else res.send(result).status(200);
 });
