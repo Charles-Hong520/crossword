@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom';
 import '@/styles/PuzzleList.css';
 import { useQuery } from '@tanstack/react-query';
@@ -13,13 +12,9 @@ function PuzzleList() {
                 ), staleTime: 1000 * 60 * 60 * 24,
     });
 
-
-
-
     if (isPending) return 'Getting Puzzle List...';
     if (error) return 'An error has occurred: ' + error.message;
 
-    console.log(data);
     return (
         <>
             <div className='puzzle-grid'>

@@ -4,6 +4,7 @@ import Clues from '@/components/Clues'
 import '@/styles/Puzzle.css'
 import { useParams } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query';
+import NotFound from '@/components/NotFound'
 function Puzzle() {
   const { puzzle_number } = useParams();
   const [direction, setDirection] = useState("ACROSS");
@@ -33,35 +34,37 @@ function Puzzle() {
 
 
   if (isPending) return 'Loading...';
-  if (error) return 'An error has occurred: ' + error.message;
+  if (error) {
+    return <NotFound />;
+  }
 
   return (
     <>
-    <div className='puzzle-container'>
-      
-      <div className='title-bar'>
-        {data.title}
-        {hasWon && <p className='win'>C'EST FINI !</p>}
-      </div>
-      <div className='puzzle-content'>
-        <Grid
-          puzzle={data}
-          direction={direction}
-          setDirection={setDirection}
-          currPos={currPos}
-          setCurrPos={setCurrPos}
-          letters={letters}
-          setLetters={setLetters}
+      <div className='puzzle-container'>
+
+        <div className='title-bar'>
+          {data.title}
+          {hasWon && <p className='win'>C'EST FINI !</p>}
+        </div>
+        <div className='puzzle-content'>
+          <Grid
+            puzzle={data}
+            direction={direction}
+            setDirection={setDirection}
+            currPos={currPos}
+            setCurrPos={setCurrPos}
+            letters={letters}
+            setLetters={setLetters}
           />
-        <Clues
-          puzzle={data}
-          direction={direction}
-          setDirection={setDirection}
-          currPos={currPos}
-          setCurrPos={setCurrPos}
+          <Clues
+            puzzle={data}
+            direction={direction}
+            setDirection={setDirection}
+            currPos={currPos}
+            setCurrPos={setCurrPos}
           />
+        </div>
       </div>
-          </div>
 
     </>
   )

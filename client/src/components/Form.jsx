@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import '@/styles/Form.css';
-import { useNavigate  } from 'react-router-dom';
-const Form = () => {
+import { useMutation } from '@tanstack/react-query';
+import { useNavigate } from 'react-router-dom';
+function Form() {
     const [acrossClues, setAcrossClues] = useState('');
     const [downClues, setDownClues] = useState('');
     const [title, setTitle] = useState('');
     const [answer, setAnswer] = useState('');
     const [errorMessages, setErrorMessages] = useState([]);
-    const navigate = useNavigate;
+    const navigate = useNavigate();
     const data = {
         title: "",
         rows: 5,
@@ -33,6 +34,7 @@ const Form = () => {
         }
     };
 
+    // checking valid form
     useEffect(() => {
         let error = [];
         const cluesData = {
@@ -60,6 +62,39 @@ const Form = () => {
         setErrorMessages(error);
     }, [acrossClues, downClues, title, answer]);
 
+    const postData = async (payload) => {
+        const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/mini`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(payload),
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json(); // Assuming API returns error details
+            throw new Error(errorData.message || 'Something went wrong');
+        }
+
+        return response.json();
+    }
+
+    const mutation = useMutation({
+        mutationFn: postData, // Your mutation function
+        onSuccess: (success) => {
+            console.log("submit mini success:", success);
+            setTitle('');
+            setAcrossClues('');
+            setDownClues('');
+            setAnswer('');
+            alert('good job ani\npuzzle number: ' + success.puzzle_number);
+        },
+        onError: (error) => {
+            console.log("submit mini failed:", error);
+
+        },
+    });
+
 
 
     const handleSubmit = async (event) => {
@@ -83,25 +118,7 @@ const Form = () => {
             data.across[a[i]].clue = cluesData.across[i];
             data.down[d[i]].clue = cluesData.down[i];
         }
-        try {
-            const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/mini`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(data),
-            });
-
-            if (response.ok) {
-                navigate('/');
-            } else {
-                console.error('Failed to submit clues:', response.statusText);
-                setErrorMessages(errorMessages => [...errorMessages, <div>failed to submit data, try again</div>]);
-            }
-        } catch (error) {
-            console.error('Error submitting clues:', error);
-            setErrorMessages(errorMessages => [...errorMessages, <div>failed to submit data, try again</div>]);
-        }
+        mutation.mutate(data);
     };
 
     return (

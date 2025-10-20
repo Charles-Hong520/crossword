@@ -7,7 +7,7 @@ const PORT = process.env.PORT || 5050;
 const app = express();
 
 let corsOptions = {
-   origin : [process.env.FRONTEND_URL,'https://crossword-2tch.onrender.com/','http://localhost:5173','http://127.0.0.1:5173'],
+  origin: [process.env.FRONTEND_URL, 'https://crossword-2tch.onrender.com/', 'http://localhost:5173', 'http://127.0.0.1:5173'],
 }
 app.use(cors(corsOptions));
 app.use(express.json());
